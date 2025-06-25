@@ -25,3 +25,10 @@ function updateTime() {
 // Update the time immediately, and then every second
 updateTime();
 setInterval(updateTime, 1000);
+
+
+chrome.action.setBadgeText({ text: 'TIMER' ,
+    
+ } ,()=> {
+    console.log('Badge text set to "TIMER Extension"');
+});
