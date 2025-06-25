@@ -1,0 +1,24 @@
+{
+
+
+    "manifest_version": 3,
+    "name": "My Chrome Extension",
+    "version": "0.0.1", 
+    "description": "This chrome extension is developed by Mr.Aman Sah",
+    "icon": {
+        "16": "icon-food.png",
+        "48": "icon-food.png",
+        "128": "icon-food.png"
+},
+    "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+        "16": "icon-food.png",
+        "48": "icon-food.png",
+        "128": "icon-food.png"
+    },
+    "default_title": "Timer for food cart Chrome Extension"
+
+}
+
+}
