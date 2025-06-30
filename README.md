@@ -5,9 +5,9 @@
 [![Google Translate API](https://img.shields.io/badge/Google_Translate-API-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://cloud.google.com/translate)
 [![License: MIT](https://img.shields.io/badge/License-MIT-green.svg?style=for-the-badge)](https://opensource.org/licenses/MIT)
 
-> **Instantly translate English text to Hindi with a beautiful popup interface**
+> **Instantly translate English text to Hindi with a interactive popup interface**
 
-A powerful Chrome extension that provides real-time English to Hindi translation with an elegant user interface. Simply select any English text on any webpage and get instant Hindi translations powered by Google Cloud Translate API.
+
 
 ## ✨ Features
 
@@ -50,13 +50,8 @@ A powerful Chrome extension that provides real-time English to Hindi translation
    - Responsive popup that adapts to screen size
    - Clean typography for easy reading
 
-4. **⏰ Smart Behavior**
-   - Auto-disappears after 5 seconds
-   - Click × button to close manually
-   - Click outside popup to dismiss
-   - Scroll to hide popup automatically
 
-### ✨ Live Demo Features:
+### ✨  Demo Features:
 
 - **🌍 Universal Compatibility** - Works on any website
 - **🚀 Lightning Fast** - Instant translations without page reload
