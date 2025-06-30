@@ -14,3 +14,28 @@ h2, h3, h4 {
     font-weight: normal;
     color: #333;
 }
+
+.translation-info {
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 15px;
+    border-radius: 10px;
+    margin-top: 20px;
+    text-align: center;
+}
+
+.translation-info h3 {
+    color: white;
+    margin-top: 0;
+    font-size: 18px;
+}
+
+.translation-info p {
+    margin: 8px 0;
+    font-size: 14px;
+}
+
+.translation-info small {
+    opacity: 0.8;
+    font-size: 12px;
+}
