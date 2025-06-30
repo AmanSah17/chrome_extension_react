@@ -20,15 +20,49 @@ A powerful Chrome extension that provides real-time English to Hindi translation
 - ⏰ **Smart Timing** - Auto-disappears after 5 seconds or manual close
 - 🎯 **Smart Detection** - Only translates English text (filters out other languages)
 
-## 🎬 Demo
+## 🎬 Demo & Screenshots
 
-![Extension Demo](./Images/version_0.0.1_results.png)
+### 📸 Extension in Action
 
-### How it works:
-1. **Select** any English word or phrase on any webpage
-2. **Watch** the beautiful translation popup appear instantly
-3. **Read** the Hindi translation with original text reference
-4. **Close** automatically or click the × button
+<div align="center">
+
+| Step | Screenshot | Description |
+|------|------------|-------------|
+| **1. Initial Setup** | ![Setup](./Images/version_0.0.1_results.png) | Extension popup showing current time and translation feature info |
+| **2. Text Selection** | ![Selection](./Images/image_0.0.2.png) | Select any English text on any webpage |
+| **3. Translation Result** | ![Translation](./Images/image_0.0.3.png) | Beautiful popup showing Hindi translation |
+
+</div>
+
+### 🔄 How it Works:
+
+1. **📝 Select Text**
+   - Highlight any English word or phrase on any webpage
+   - Works on news sites, blogs, social media, documentation, etc.
+
+2. **⚡ Instant Translation**
+   - Beautiful popup appears near your selected text
+   - Shows original English text and Hindi translation
+   - Powered by Google Cloud Translate API
+
+3. **🎨 Beautiful Interface**
+   - Modern gradient design with smooth animations
+   - Responsive popup that adapts to screen size
+   - Clean typography for easy reading
+
+4. **⏰ Smart Behavior**
+   - Auto-disappears after 5 seconds
+   - Click × button to close manually
+   - Click outside popup to dismiss
+   - Scroll to hide popup automatically
+
+### ✨ Live Demo Features:
+
+- **🌍 Universal Compatibility** - Works on any website
+- **🚀 Lightning Fast** - Instant translations without page reload
+- **📱 Mobile Friendly** - Responsive design for all devices
+- **🔒 Secure** - No data stored locally, direct API communication
+- **🎯 Smart Detection** - Only translates English text (max 50 characters)
 
 ## 🚀 Quick Start
 
@@ -65,12 +99,40 @@ A powerful Chrome extension that provides real-time English to Hindi translation
 
 ## 📖 How to Use
 
-### Basic Usage
+### 🎯 Step-by-Step Visual Guide
+
+#### Step 1: Extension Setup
+<div align="center">
+<img src="./Images/version_0.0.1_results.png" alt="Extension Popup" width="400">
+<p><em>Click the extension icon to see the main popup with current time and translation feature info</em></p>
+</div>
+
+#### Step 2: Select English Text
+<div align="center">
+<img src="./Images/image_0.0.2.png" alt="Text Selection" width="600">
+<p><em>Highlight any English word or phrase on any webpage (up to 50 characters)</em></p>
+</div>
+
+#### Step 3: View Translation
+<div align="center">
+<img src="./Images/image_0.0.3.png" alt="Translation Popup" width="600">
+<p><em>Beautiful popup appears instantly with Hindi translation and original text</em></p>
+</div>
+
+### 💡 Basic Usage Tips
 
 1. **Navigate** to any webpage with English text
 2. **Select** any English word or phrase (up to 50 characters)
 3. **View** the instant Hindi translation in a beautiful popup
 4. **Close** the popup by clicking outside, pressing × button, or wait 5 seconds
+
+### 🌟 Pro Tips
+
+- **Double-click** words for quick selection
+- **Drag to select** phrases and sentences
+- **Works on PDFs** opened in Chrome browser
+- **Try different websites** - news, blogs, social media, documentation
+- **Mobile responsive** - works on Chrome mobile browser
 
 ### Advanced Features
 
