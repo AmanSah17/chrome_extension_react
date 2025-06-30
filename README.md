@@ -11,14 +11,38 @@ A powerful Chrome extension that provides real-time English to Hindi translation
 
 ## ✨ Features
 
-- 🚀 **Instant Translation** - Select English text and get immediate Hindi translation
-- 🎨 **Beautiful UI** - Modern gradient popup with smooth animations
-- ⚡ **Lightning Fast** - Optimized for performance with minimal resource usage
-- 🌍 **Universal** - Works on any website across the internet
-- 🔒 **Secure** - Uses Google Cloud Translate API for accurate translations
-- 📱 **Responsive** - Adapts to different screen sizes and devices
-- ⏰ **Smart Timing** - Auto-disappears after 5 seconds or manual close
-- 🎯 **Smart Detection** - Only translates English text (filters out other languages)
+<table>
+<tr>
+<td width="50%">
+
+### 🚀 Core Features
+- **Instant Translation** - Select English text and get immediate Hindi translation
+- **Beautiful UI** - Modern gradient popup with smooth animations
+- **Lightning Fast** - Optimized for performance with minimal resource usage
+- **Universal** - Works on any website across the internet
+- **Secure** - Uses Google Cloud Translate API for accurate translations
+
+</td>
+<td width="50%">
+
+### 🎯 Smart Features
+- **Responsive** - Adapts to different screen sizes and devices
+- **Smart Timing** - Auto-disappears after 5 seconds or manual close
+- **Smart Detection** - Only translates English text (filters out other languages)
+- **Context Menu** - Right-click translation option
+- **No Registration** - Works immediately after installation
+
+</td>
+</tr>
+</table>
+
+### 🖼️ Feature Highlights
+
+| Feature | Preview | Description |
+|---------|---------|-------------|
+| **🕒 Time Display** | ![Time Feature](./Images/version_0.0.1_results.png) | Built-in clock with personalized greetings |
+| **📝 Text Selection** | ![Selection](./Images/image_0.0.2.png) | Smooth text selection on any webpage |
+| **🌐 Translation** | ![Translation](./Images/image_0.0.3.png) | Beautiful popup with instant Hindi translation |
 
 ## 🎬 Demo & Screenshots
 
