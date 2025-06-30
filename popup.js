@@ -1,6 +1,7 @@
 const timeElement = document.getElementById('time');
 const dateElement = document.getElementById('date');
 const greetingElement = document.getElementById('greeting');
+const nameElement = document.getElementById('name');
 
 function updateTime() {
     const now = new Date();
@@ -32,3 +33,9 @@ chrome.action.setBadgeText({ text: 'TIMER' ,
  } ,()=> {
     console.log('Badge text set to "TIMER Extension"');
 });
+
+chrome.storage.sync.get(["name"],(result) => {
+    nameElement.textContent = `Hello ${result.name}!`;
+    console.log("Name is saved:", result.name)
+});
+
