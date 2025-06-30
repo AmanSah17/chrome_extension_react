@@ -26,7 +26,17 @@ class HindiAstraBackground {
         
         // Setup keyboard commands
         chrome.commands.onCommand.addListener(this.handleCommand.bind(this));
-        
+
+        // Setup global translator command
+        chrome.commands.onCommand.addListener(this.handleGlobalCommand.bind(this));
+
+        // Setup tab listeners for aggressive injection
+        chrome.tabs.onUpdated.addListener(this.handleTabUpdate.bind(this));
+        chrome.tabs.onActivated.addListener(this.handleTabActivated.bind(this));
+
+        // Setup aggressive injection for local files
+        this.setupAggressiveInjection();
+
         console.log('✅ Hindi-astra Background Service ready!');
     }
 
@@ -74,6 +84,406 @@ class HindiAstraBackground {
         } catch (error) {
             console.log('Could not check file URL permission:', error);
         }
+    }
+
+    /**
+     * Setup aggressive injection for local files
+     */
+    setupAggressiveInjection() {
+        // Inject into all existing tabs
+        chrome.tabs.query({}, (tabs) => {
+            tabs.forEach(tab => {
+                if (this.shouldInjectIntoTab(tab)) {
+                    this.injectIntoTab(tab.id);
+                }
+            });
+        });
+    }
+
+    /**
+     * Handle tab updates
+     */
+    handleTabUpdate(tabId, changeInfo, tab) {
+        if (changeInfo.status === 'complete' && this.shouldInjectIntoTab(tab)) {
+            console.log('📄 PDF tab detected, attempting injection:', tab.url);
+
+            // Multiple injection attempts with different methods
+            this.injectIntoTab(tabId);
+            setTimeout(() => this.injectIntoTab(tabId), 1000);
+            setTimeout(() => this.injectIntoTab(tabId), 3000);
+            setTimeout(() => this.injectIntoTab(tabId), 5000);
+
+            // Force injection via executeScript
+            setTimeout(() => this.forceInjectChatbot(tabId), 2000);
+        }
+    }
+
+    /**
+     * Handle tab activation
+     */
+    handleTabActivated(activeInfo) {
+        chrome.tabs.get(activeInfo.tabId, (tab) => {
+            if (this.shouldInjectIntoTab(tab)) {
+                this.injectIntoTab(tab.id);
+            }
+        });
+    }
+
+    /**
+     * Check if we should inject into this tab
+     */
+    shouldInjectIntoTab(tab) {
+        if (!tab.url) return false;
+
+        const url = tab.url.toLowerCase();
+        return url.startsWith('file://') ||
+               url.includes('.pdf') ||
+               url.includes('chrome-extension://') && url.includes('.pdf');
+    }
+
+    /**
+     * Inject scripts into tab
+     */
+    async injectIntoTab(tabId) {
+        try {
+            // Try to inject universal injector
+            await chrome.scripting.executeScript({
+                target: { tabId: tabId },
+                files: ['content/universal-injector.js']
+            });
+
+            console.log(`✅ Injected into tab ${tabId}`);
+        } catch (error) {
+            console.log(`⚠️ Could not inject into tab ${tabId}:`, error.message);
+
+            // Try alternative injection method
+            try {
+                await chrome.scripting.executeScript({
+                    target: { tabId: tabId },
+                    func: this.createEmergencyTranslator
+                });
+                console.log(`✅ Emergency translator injected into tab ${tabId}`);
+            } catch (emergencyError) {
+                console.log(`❌ Emergency injection also failed for tab ${tabId}`);
+            }
+        }
+    }
+
+    /**
+     * Emergency translator function (injected directly)
+     */
+    createEmergencyTranslator() {
+        if (window.hindiAstraEmergency) return;
+        window.hindiAstraEmergency = true;
+
+        console.log('🚨 Hindi-astra Emergency Translator activated');
+
+        // Create emergency floating button
+        const btn = document.createElement('div');
+        btn.innerHTML = '🌐';
+        btn.title = 'Hindi-astra Emergency Translator';
+        btn.style.cssText = `
+            position: fixed !important;
+            right: 20px !important;
+            bottom: 20px !important;
+            width: 60px !important;
+            height: 60px !important;
+            background: #dc3545 !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            color: white !important;
+            cursor: pointer !important;
+            z-index: 2147483647 !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+            border: 3px solid rgba(255,255,255,0.2) !important;
+        `;
+
+        btn.onclick = () => {
+            const text = prompt('Enter English text to translate to Hindi:');
+            if (text) {
+                fetch(`https://translation.googleapis.com/language/translate/v2?key=AIzaSyDP6sQRs214HFL6uCjEwVRYW4Gl6EBRLbI`, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({
+                        q: text.trim(),
+                        source: 'en',
+                        target: 'hi',
+                        format: 'text'
+                    })
+                }).then(r => r.json()).then(data => {
+                    if (data.data && data.data.translations && data.data.translations.length > 0) {
+                        alert(`Hindi Translation:\n\n${data.data.translations[0].translatedText}`);
+                    } else {
+                        alert('Translation failed');
+                    }
+                }).catch(() => {
+                    alert('Translation failed - check internet connection');
+                });
+            }
+        };
+
+        document.body.appendChild(btn);
+
+        // Show indicator
+        const indicator = document.createElement('div');
+        indicator.textContent = '🚨 Emergency Mode';
+        indicator.style.cssText = `
+            position: fixed !important;
+            top: 10px !important;
+            right: 10px !important;
+            background: #dc3545 !important;
+            color: white !important;
+            padding: 8px 12px !important;
+            border-radius: 20px !important;
+            font-size: 12px !important;
+            z-index: 2147483647 !important;
+        `;
+        document.body.appendChild(indicator);
+        setTimeout(() => indicator.remove(), 5000);
+    }
+
+    /**
+     * Force inject chatbot using direct script execution
+     */
+    async forceInjectChatbot(tabId) {
+        try {
+            console.log('🚀 Force injecting chatbot into tab:', tabId);
+
+            await chrome.scripting.executeScript({
+                target: { tabId: tabId },
+                func: this.createWorkingChatbot,
+                args: [this.apiKey]
+            });
+
+            console.log('✅ Force injection successful');
+        } catch (error) {
+            console.log('❌ Force injection failed:', error);
+        }
+    }
+
+    /**
+     * Create working chatbot (injected function)
+     */
+    createWorkingChatbot(apiKey) {
+        // Prevent multiple injections
+        if (window.hindiAstraForceInjected) return;
+        window.hindiAstraForceInjected = true;
+
+        console.log('🤖 Creating working chatbot...');
+
+        // Create floating button
+        const chatbot = document.createElement('div');
+        chatbot.innerHTML = '🌐';
+        chatbot.title = 'Hindi-astra Translator';
+        chatbot.style.cssText = `
+            position: fixed !important;
+            right: 20px !important;
+            bottom: 20px !important;
+            width: 60px !important;
+            height: 60px !important;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%) !important;
+            border-radius: 50% !important;
+            display: flex !important;
+            align-items: center !important;
+            justify-content: center !important;
+            font-size: 24px !important;
+            color: white !important;
+            cursor: pointer !important;
+            z-index: 2147483647 !important;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.3) !important;
+            transition: all 0.3s ease !important;
+            user-select: none !important;
+            border: 3px solid rgba(255,255,255,0.2) !important;
+            font-family: Arial, sans-serif !important;
+        `;
+
+        // Create panel
+        const panel = document.createElement('div');
+        panel.style.cssText = `
+            position: fixed !important;
+            right: 90px !important;
+            bottom: 20px !important;
+            width: 350px !important;
+            height: 400px !important;
+            background: white !important;
+            border-radius: 15px !important;
+            box-shadow: 0 10px 40px rgba(0,0,0,0.3) !important;
+            z-index: 2147483646 !important;
+            display: none !important;
+            flex-direction: column !important;
+            font-family: Arial, sans-serif !important;
+            border: 1px solid #ccc !important;
+        `;
+
+        panel.innerHTML = `
+            <div style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; padding: 15px; display: flex; justify-content: space-between; align-items: center;">
+                <span style="font-weight: bold;">🌐 Hindi-astra</span>
+                <button id="close-panel" style="background: rgba(255,255,255,0.2); border: none; color: white; border-radius: 50%; width: 25px; height: 25px; cursor: pointer;">×</button>
+            </div>
+            <div style="padding: 20px; flex: 1; display: flex; flex-direction: column; gap: 15px;">
+                <div style="background: #f0f8ff; padding: 12px; border-radius: 8px; border-left: 4px solid #667eea;">
+                    <strong>Quick Translate</strong><br>
+                    <small>Paste English text for Hindi translation</small>
+                </div>
+                <textarea id="text-input" placeholder="Paste English text here..." style="width: 100%; height: 100px; border: 2px solid #667eea; border-radius: 6px; padding: 10px; font-size: 14px; resize: vertical; box-sizing: border-box;"></textarea>
+                <button id="translate-btn" style="width: 100%; padding: 12px; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border: none; border-radius: 6px; font-size: 14px; cursor: pointer;">Translate to Hindi</button>
+                <div id="result-area" style="background: #e8f5e8; border: 1px solid #c3e6c3; border-radius: 6px; padding: 12px; display: none;">
+                    <strong style="color: #2d5a2d;">Hindi Translation:</strong><br>
+                    <div id="result-text" style="font-size: 16px; color: #2d5a2d; margin-top: 8px;"></div>
+                </div>
+                <div id="error-area" style="background: #f8d7da; border: 1px solid #f5c6cb; border-radius: 6px; padding: 12px; color: #721c24; display: none;"></div>
+            </div>
+        `;
+
+        document.body.appendChild(chatbot);
+        document.body.appendChild(panel);
+
+        let isTranslating = false;
+
+        // Toggle panel
+        chatbot.onclick = () => {
+            const isVisible = panel.style.display === 'flex';
+            panel.style.display = isVisible ? 'none' : 'flex';
+            if (!isVisible) {
+                setTimeout(() => document.getElementById('text-input').focus(), 100);
+            }
+        };
+
+        // Close panel
+        document.getElementById('close-panel').onclick = () => {
+            panel.style.display = 'none';
+        };
+
+        // Translate function
+        async function translateText() {
+            if (isTranslating) return;
+
+            const input = document.getElementById('text-input');
+            const text = input.value.trim();
+
+            if (!text) {
+                showError('Please enter some text to translate');
+                return;
+            }
+
+            const btn = document.getElementById('translate-btn');
+            const resultArea = document.getElementById('result-area');
+            const errorArea = document.getElementById('error-area');
+            const resultText = document.getElementById('result-text');
+
+            isTranslating = true;
+            btn.textContent = 'Translating...';
+            btn.disabled = true;
+            resultArea.style.display = 'none';
+            errorArea.style.display = 'none';
+
+            try {
+                console.log('🔄 Translating:', text);
+
+                const response = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${apiKey}`, {
+                    method: 'POST',
+                    headers: {
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        q: text,
+                        source: 'en',
+                        target: 'hi',
+                        format: 'text'
+                    })
+                });
+
+                console.log('📡 API Response status:', response.status);
+
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    console.error('API Error:', errorText);
+                    throw new Error(`API Error: ${response.status} - ${errorText}`);
+                }
+
+                const data = await response.json();
+                console.log('📄 API Response data:', data);
+
+                if (data.data && data.data.translations && data.data.translations.length > 0) {
+                    const translation = data.data.translations[0].translatedText;
+                    resultText.textContent = translation;
+                    resultArea.style.display = 'block';
+                    console.log('✅ Translation successful:', translation);
+                } else {
+                    throw new Error('No translation found in response');
+                }
+
+            } catch (error) {
+                console.error('❌ Translation failed:', error);
+                showError(`Translation failed: ${error.message}`);
+            } finally {
+                btn.textContent = 'Translate to Hindi';
+                btn.disabled = false;
+                isTranslating = false;
+            }
+        }
+
+        function showError(message) {
+            const errorArea = document.getElementById('error-area');
+            const resultArea = document.getElementById('result-area');
+
+            errorArea.textContent = message;
+            errorArea.style.display = 'block';
+            resultArea.style.display = 'none';
+        }
+
+        // Event listeners
+        document.getElementById('translate-btn').onclick = translateText;
+
+        document.getElementById('text-input').onkeydown = (e) => {
+            if (e.key === 'Enter' && e.ctrlKey) {
+                translateText();
+            }
+        };
+
+        // Hover effects
+        chatbot.onmouseenter = () => chatbot.style.transform = 'scale(1.1)';
+        chatbot.onmouseleave = () => chatbot.style.transform = 'scale(1)';
+
+        // Close on outside click
+        document.onclick = (e) => {
+            if (panel.style.display === 'flex' &&
+                !panel.contains(e.target) &&
+                !chatbot.contains(e.target)) {
+                panel.style.display = 'none';
+            }
+        };
+
+        // Success indicator
+        const indicator = document.createElement('div');
+        indicator.textContent = '✅ Hindi-astra Active';
+        indicator.style.cssText = `
+            position: fixed !important;
+            top: 10px !important;
+            right: 10px !important;
+            background: #28a745 !important;
+            color: white !important;
+            padding: 8px 12px !important;
+            border-radius: 20px !important;
+            font-size: 12px !important;
+            z-index: 2147483647 !important;
+            font-family: Arial, sans-serif !important;
+        `;
+
+        document.body.appendChild(indicator);
+        setTimeout(() => {
+            if (indicator.parentNode) {
+                indicator.style.opacity = '0';
+                indicator.style.transition = 'opacity 0.5s';
+                setTimeout(() => indicator.remove(), 500);
+            }
+        }, 3000);
+
+        console.log('✅ Working chatbot created successfully!');
     }
 
     /**
@@ -189,7 +599,7 @@ class HindiAstraBackground {
      */
     async handleCommand(command) {
         const [tab] = await chrome.tabs.query({ active: true, currentWindow: true });
-        
+
         switch (command) {
             case 'translate-selection':
                 await chrome.tabs.sendMessage(tab.id, {
@@ -201,6 +611,46 @@ class HindiAstraBackground {
                     action: 'toggleDictionary'
                 });
                 break;
+            case 'open-translator':
+                await this.handleGlobalTranslator(tab);
+                break;
+        }
+    }
+
+    /**
+     * Handle global translator command (Ctrl+Shift+K)
+     */
+    async handleGlobalTranslator(tab) {
+        try {
+            console.log('🌐 Opening global translator on:', tab.url);
+
+            // First try to send message to existing content script
+            try {
+                await chrome.tabs.sendMessage(tab.id, { action: 'open-translator' });
+                console.log('✅ Translator opened via message');
+            } catch (messageError) {
+                console.log('📨 Message failed, injecting global translator...');
+
+                // If message fails, inject the global translator
+                await chrome.scripting.executeScript({
+                    target: { tabId: tab.id },
+                    files: ['content/global-translator.js']
+                });
+
+                console.log('✅ Global translator injected');
+
+                // Wait a bit then send message to open
+                setTimeout(async () => {
+                    try {
+                        await chrome.tabs.sendMessage(tab.id, { action: 'open-translator' });
+                        console.log('✅ Translator opened after injection');
+                    } catch (error) {
+                        console.log('⚠️ Could not send open message, but script is injected');
+                    }
+                }, 500);
+            }
+        } catch (error) {
+            console.error('❌ Global translator error:', error);
         }
     }
 

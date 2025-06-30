@@ -11,7 +11,7 @@
     },
     
     "action": {
-        "default_popup": "popup/popup.html",
+        "default_popup": "popup/pdf-popup.html",
         "default_icon": {
             "16": "icons/icon-16.png",
             "48": "icons/icon-48.png",
@@ -27,37 +27,11 @@
     "content_scripts": [
         {
             "matches": ["<all_urls>"],
-            "js": [
-                "content/direct-pdf-injector.js",
-                "content/local-pdf-fixer.js",
-                "content/pdf-detector.js",
-                "content/text-extractor.js",
-                "content/translation-engine.js",
-                "content/ui-components.js",
-                "content/ocr-engine.js",
-                "content/debug-helper.js",
-                "content/main-content.js"
-            ],
-            "css": ["content/styles.css"],
-            "run_at": "document_end",
-            "match_about_blank": true
-        },
-        {
-            "matches": ["*://*/*.pdf", "*://*/viewer.html*", "file://*/*.pdf", "file:///*"],
-            "js": [
-                "content/pdf-handler.js",
-                "content/pdf-text-extractor.js"
-            ],
-            "css": ["content/pdf-styles.css"],
+            "js": ["content/global-translator.js"],
             "run_at": "document_end",
             "all_frames": true,
-            "match_about_blank": true
-        },
-        {
-            "matches": ["file://*"],
-            "js": ["content/direct-pdf-injector.js"],
-            "run_at": "document_start",
-            "all_frames": true
+            "match_about_blank": true,
+            "match_origin_as_fallback": true
         }
     ],
     
@@ -91,6 +65,16 @@
             "matches": ["<all_urls>"]
         }
     ],
+
+    "commands": {
+        "open-translator": {
+            "suggested_key": {
+                "default": "Ctrl+Shift+K",
+                "mac": "Command+Shift+K"
+            },
+            "description": "Open Hindi-astra Quick Translator"
+        }
+    },
     
     "commands": {
         "translate-selection": {

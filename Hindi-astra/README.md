@@ -1,13 +1,20 @@
 # 🎓 Hindi-astra - Academic Translation Assistant
 
-[![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://github.com/AmanSah17/chrome_extension_react/tree/Hindi-astra)
-[![Academic Focus](https://img.shields.io/badge/Academic-Focus-FF6B6B?style=for-the-badge&logo=graduation-cap&logoColor=white)](https://github.com/AmanSah17/chrome_extension_react/tree/Hindi-astra)
-[![PDF Support](https://img.shields.io/badge/PDF-Support-FF4757?style=for-the-badge&logo=adobe&logoColor=white)](https://github.com/AmanSah17/chrome_extension_react/tree/Hindi-astra)
-[![Offline Mode](https://img.shields.io/badge/Offline-Ready-2ECC71?style=for-the-badge&logo=wifi&logoColor=white)](https://github.com/AmanSah17/chrome_extension_react/tree/Hindi-astra)
+[![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=google-chrome&logoColor=white)](https://github.com/AmanSah17/Hindi-astra)
+[![Version](https://img.shields.io/badge/Version-2.0.0-brightgreen?style=for-the-badge)](https://github.com/AmanSah17/Hindi-astra)
+[![License](https://img.shields.io/badge/License-MIT-blue?style=for-the-badge)](LICENSE)
+[![Google Translate API](https://img.shields.io/badge/Google-Translate_API-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://cloud.google.com/translate)
+[![Ctrl+Shift+K](https://img.shields.io/badge/Shortcut-Ctrl%2BShift%2BK-FF6B6B?style=for-the-badge&logo=keyboard&logoColor=white)](https://github.com/AmanSah17/Hindi-astra)
 
 > **Advanced Chrome extension specifically designed for Hindi-speaking students to translate English academic content including PDFs, Word documents, and scanned materials**
 
-Hindi-astra (हिंदी-अस्त्र) is a powerful academic translation assistant that bridges the language gap for Hindi-speaking students working with English academic content. Unlike basic translation tools, Hindi-astra is specifically optimized for academic terminology, research papers, textbooks, and educational materials.
+Hindi-astra (हिंदी-अस्त्र) is a powerful Chrome extension that provides **instant English-to-Hindi translation** with a simple **Ctrl+Shift+K** keyboard shortcut. Designed specifically for Hindi-speaking students and professionals, it works seamlessly with **local PDF files**, web pages, and academic content.
+
+## 🚀 **Key Highlight: Global Keyboard Shortcut**
+
+**Press `Ctrl+Shift+K` anywhere** → Beautiful translation popup appears instantly!
+
+Perfect for reading PDFs and browsing the web with immediate Hindi translations.
 
 ## 🎯 **Target Audience**
 
@@ -19,15 +26,21 @@ Hindi-astra (हिंदी-अस्त्र) is a powerful academic translat
 - ⚡ Need instant translation while studying
 - 🌐 Have limited or unreliable internet connectivity
 
-## ✨ **Advanced Features**
+## ✨ **Key Features**
 
-### 📄 **PDF & Document Support**
-- **Native PDF Translation** - Works with text-based PDF documents
-- **Scanned Document Support** - OCR assistance for image-based PDFs
-- **Academic Paper Optimization** - Specialized for research papers and textbooks
-- **Multi-format Support** - PDFs, Word docs, web pages, and more
+### 🚀 **Global Keyboard Shortcut**
+- **`Ctrl+Shift+K`** opens translator popup anywhere
+- Works on **any webpage** and **local PDF files**
+- **Instant access** - no need to find extension icon
+- **Beautiful purple gradient** popup design
 
-### 🌐 **Smart Translation Engine**
+### 📄 **Universal PDF Support**
+- **Local PDF files** (file:// URLs) - Perfect for offline study
+- **Web-based PDFs** - Online research papers and documents
+- **Scanned documents** with OCR support
+- **Academic papers** and textbooks
+
+### 🎯 **Smart Translation**
 - **Online Mode** - High-accuracy translations using Google Translate API
 - **Offline Mode** - Built-in dictionary with 1000+ academic terms
 - **Context-Aware** - Adapts translation based on academic context

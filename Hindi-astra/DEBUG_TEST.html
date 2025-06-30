@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi-astra Debug Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+        .success { border-left-color: #28a745; background: #d4edda; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .test-text {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 2px dashed #007bff;
+            margin: 10px 0;
+            user-select: text;
+        }
+        pre {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+            font-size: 12px;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 3px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .status.pass { background: #d4edda; color: #155724; }
+        .status.fail { background: #f8d7da; color: #721c24; }
+        .status.unknown { background: #e2e3e5; color: #383d41; }
+        #debug-output {
+            max-height: 300px;
+            overflow-y: auto;
+            background: #f8f9fa;
+            padding: 10px;
+            border-radius: 5px;
+            font-family: monospace;
+            font-size: 12px;
+        }
+    </style>
+</head>
+<body>
+    <h1>🔧 Hindi-astra Debug Test</h1>
+    
+    <div class="test-section">
+        <h2>📋 Current Status</h2>
+        <p><strong>URL:</strong> <span id="current-url"></span></p>
+        <p><strong>Protocol:</strong> <span id="protocol"></span></p>
+        <p><strong>Is Local File:</strong> <span id="is-local"></span></p>
+        <p><strong>Extension Detected:</strong> <span id="extension-status"></span></p>
+    </div>
+
+    <div class="test-section">
+        <h2>🧪 API Test</h2>
+        <button onclick="testAPI()">Test Google Translate API</button>
+        <div id="api-result"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🤖 Force Create Chatbot</h2>
+        <button onclick="forceCreateChatbot()">Force Create Floating Chatbot</button>
+        <div id="chatbot-status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📄 Text Selection Test</h2>
+        <p>Select the text below to test translation:</p>
+        <div class="test-text">
+            <p>Hello world. This is a test sentence for Hindi translation.</p>
+            <p>Computer science is an important subject for students.</p>
+            <p>Research and development are crucial for innovation.</p>
+        </div>
+        <div id="selection-status"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Debug Console</h2>
+        <button onclick="clearDebug()">Clear</button>
+        <button onclick="exportDebug()">Export Debug Info</button>
+        <div id="debug-output"></div>
+    </div>
+
+    <script>
+        // Global debug logger
+        const debugLog = [];
+        const originalConsoleLog = console.log;
+        const originalConsoleError = console.error;
+        
+        console.log = function(...args) {
+            originalConsoleLog.apply(console, args);
+            logToDebug('LOG', args.join(' '));
+        };
+        
+        console.error = function(...args) {
+            originalConsoleError.apply(console, args);
+            logToDebug('ERROR', args.join(' '));
+        };
+        
+        function logToDebug(type, message) {
+            const timestamp = new Date().toLocaleTimeString();
+            debugLog.push(`[${timestamp}] ${type}: ${message}`);
+            updateDebugOutput();
+        }
+        
+        function updateDebugOutput() {
+            const output = document.getElementById('debug-output');
+            output.innerHTML = debugLog.slice(-50).map(log => `<div>${log}</div>`).join('');
+            output.scrollTop = output.scrollHeight;
+        }
+        
+        function clearDebug() {
+            debugLog.length = 0;
+            updateDebugOutput();
+        }
+        
+        function exportDebug() {
+            const debugData = {
+                timestamp: new Date().toISOString(),
+                url: window.location.href,
+                userAgent: navigator.userAgent,
+                logs: debugLog,
+                extensionStatus: getExtensionStatus()
+            };
+            
+            const text = JSON.stringify(debugData, null, 2);
+            navigator.clipboard.writeText(text).then(() => {
+                alert('Debug info copied to clipboard!');
+            }).catch(() => {
+                prompt('Debug info (copy this):', text);
+            });
+        }
+        
+        function getExtensionStatus() {
+            return {
+                hindiAstraInjected: !!window.hindiAstraInjected,
+                hindiAstraForceInjected: !!window.hindiAstraForceInjected,
+                hindiAstraChatbotInjected: !!window.hindiAstraChatbotInjected,
+                floatingChatbot: !!document.querySelector('#hindi-floating-chatbot'),
+                universalChatbot: !!document.querySelector('.hindi-astra-chatbot')
+            };
+        }
+        
+        // Initialize page info
+        document.getElementById('current-url').textContent = window.location.href;
+        document.getElementById('protocol').textContent = window.location.protocol;
+        document.getElementById('is-local').textContent = window.location.protocol === 'file:' ? 'Yes' : 'No';
+        
+        // Check extension status
+        setTimeout(() => {
+            const status = getExtensionStatus();
+            const hasExtension = Object.values(status).some(Boolean);
+            document.getElementById('extension-status').innerHTML = 
+                `<span class="status ${hasExtension ? 'pass' : 'fail'}">${hasExtension ? 'Detected' : 'Not Detected'}</span>`;
+        }, 2000);
+        
+        // Test API function
+        async function testAPI() {
+            const resultDiv = document.getElementById('api-result');
+            resultDiv.innerHTML = '<p>Testing API...</p>';
+            
+            try {
+                const response = await fetch('https://translation.googleapis.com/language/translate/v2?key=AIzaSyDP6sQRs214HFL6uCjEwVRYW4Gl6EBRLbI', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        q: 'hello world',
+                        source: 'en',
+                        target: 'hi',
+                        format: 'text'
+                    })
+                });
+                
+                console.log('API Test Response Status:', response.status);
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`API Error: ${response.status} - ${errorText}`);
+                }
+                
+                const data = await response.json();
+                console.log('API Test Response Data:', data);
+                
+                if (data.data && data.data.translations && data.data.translations.length > 0) {
+                    const translation = data.data.translations[0].translatedText;
+                    resultDiv.innerHTML = `
+                        <div class="status pass">✅ API Working</div>
+                        <p><strong>Input:</strong> hello world</p>
+                        <p><strong>Output:</strong> ${translation}</p>
+                    `;
+                } else {
+                    throw new Error('No translation found in response');
+                }
+                
+            } catch (error) {
+                console.error('API Test Failed:', error);
+                resultDiv.innerHTML = `
+                    <div class="status fail">❌ API Failed</div>
+                    <p><strong>Error:</strong> ${error.message}</p>
+                `;
+            }
+        }
+        
+        // Force create chatbot
+        function forceCreateChatbot() {
+            const statusDiv = document.getElementById('chatbot-status');
+            
+            if (document.querySelector('#debug-chatbot')) {
+                statusDiv.innerHTML = '<div class="status pass">✅ Chatbot already exists</div>';
+                return;
+            }
+            
+            // Create debug chatbot
+            const chatbot = document.createElement('div');
+            chatbot.id = 'debug-chatbot';
+            chatbot.innerHTML = '🔧';
+            chatbot.title = 'Debug Chatbot';
+            chatbot.style.cssText = `
+                position: fixed;
+                right: 20px;
+                bottom: 20px;
+                width: 60px;
+                height: 60px;
+                background: #dc3545;
+                border-radius: 50%;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                font-size: 24px;
+                color: white;
+                cursor: pointer;
+                z-index: 999999;
+                box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+                border: 3px solid rgba(255,255,255,0.2);
+            `;
+            
+            chatbot.onclick = () => {
+                const text = prompt('Enter English text to translate:');
+                if (text) {
+                    testTranslation(text);
+                }
+            };
+            
+            document.body.appendChild(chatbot);
+            
+            statusDiv.innerHTML = '<div class="status pass">✅ Debug chatbot created (red icon)</div>';
+            console.log('Debug chatbot created');
+        }
+        
+        // Test translation function
+        async function testTranslation(text) {
+            try {
+                const response = await fetch('https://translation.googleapis.com/language/translate/v2?key=AIzaSyDP6sQRs214HFL6uCjEwVRYW4Gl6EBRLbI', {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json',
+                        'Accept': 'application/json'
+                    },
+                    body: JSON.stringify({
+                        q: text,
+                        source: 'en',
+                        target: 'hi',
+                        format: 'text'
+                    })
+                });
+                
+                if (!response.ok) {
+                    const errorText = await response.text();
+                    throw new Error(`${response.status}: ${errorText}`);
+                }
+                
+                const data = await response.json();
+                
+                if (data.data && data.data.translations && data.data.translations.length > 0) {
+                    const translation = data.data.translations[0].translatedText;
+                    alert(`Hindi Translation:\n\n${translation}`);
+                    console.log('Translation successful:', translation);
+                } else {
+                    throw new Error('No translation found');
+                }
+                
+            } catch (error) {
+                alert(`Translation failed: ${error.message}`);
+                console.error('Translation failed:', error);
+            }
+        }
+        
+        // Text selection handler
+        document.addEventListener('mouseup', () => {
+            const selection = window.getSelection().toString().trim();
+            if (selection) {
+                const statusDiv = document.getElementById('selection-status');
+                statusDiv.innerHTML = `<div class="status unknown">📝 Selected: "${selection}" - Testing translation...</div>`;
+                
+                // Test translation of selected text
+                setTimeout(() => {
+                    testTranslation(selection);
+                }, 500);
+            }
+        });
+        
+        console.log('🔧 Debug test page loaded');
+        console.log('Current URL:', window.location.href);
+        console.log('Protocol:', window.location.protocol);
+        console.log('Is local file:', window.location.protocol === 'file:');
+    </script>
+</body>
+</html>

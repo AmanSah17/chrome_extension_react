@@ -1,0 +1,78 @@
+{
+  "name": "hindi-astra",
+  "version": "2.0.0",
+  "description": "A powerful Chrome extension for instant English-to-Hindi translation with global keyboard shortcut support",
+  "main": "manifest.json",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "echo \"Building extension...\" && npm run validate",
+    "validate": "node scripts/validate-manifest.js",
+    "lint": "eslint content/ background/ popup/",
+    "format": "prettier --write \"**/*.{js,json,md}\"",
+    "dev": "echo \"Development mode - load extension in Chrome\"",
+    "package": "node scripts/package-extension.js",
+    "clean": "rm -rf dist/ *.zip"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AmanSah17/Hindi-astra.git"
+  },
+  "keywords": [
+    "chrome-extension",
+    "translation",
+    "hindi",
+    "english",
+    "academic",
+    "pdf",
+    "google-translate",
+    "keyboard-shortcut",
+    "education",
+    "language-learning"
+  ],
+  "author": {
+    "name": "Aman Sah",
+    "email": "amansah1717@gmail.com",
+    "url": "https://github.com/AmanSah17"
+  },
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AmanSah17/Hindi-astra/issues"
+  },
+  "homepage": "https://github.com/AmanSah17/Hindi-astra#readme",
+  "devDependencies": {
+    "eslint": "^8.0.0",
+    "prettier": "^2.0.0"
+  },
+  "engines": {
+    "node": ">=14.0.0"
+  },
+  "browserslist": [
+    "Chrome >= 88"
+  ],
+  "manifest": {
+    "version": "3",
+    "permissions": [
+      "activeTab",
+      "storage",
+      "scripting",
+      "tabs"
+    ],
+    "host_permissions": [
+      "<all_urls>"
+    ]
+  },
+  "chrome": {
+    "minimum_version": "88"
+  },
+  "features": {
+    "global_shortcut": "Ctrl+Shift+K",
+    "pdf_support": true,
+    "offline_mode": false,
+    "api_integration": "Google Translate",
+    "ocr_support": true
+  },
+  "funding": {
+    "type": "github",
+    "url": "https://github.com/sponsors/AmanSah17"
+  }
+}
