@@ -1,0 +1,275 @@
+/* Hindi-astra Content Styles */
+/* These styles are injected into web pages */
+
+/* Main translation popup styles are handled by ui-components.js */
+/* This file contains additional page-specific styles */
+
+/* Selection highlighting for better UX */
+.hindi-astra-selection-highlight {
+    background-color: rgba(102, 126, 234, 0.2) !important;
+    border-radius: 2px;
+    transition: background-color 0.2s ease;
+}
+
+/* PDF-specific styles */
+.hindi-astra-pdf-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: auto;
+    background: transparent;
+}
+
+.hindi-astra-pdf-selection {
+    position: absolute;
+    border: 2px dashed #007bff;
+    background: rgba(0, 123, 255, 0.1);
+    pointer-events: none;
+    z-index: 1001;
+}
+
+/* OCR input modal styles */
+.hindi-astra-ocr-modal {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: white;
+    border: 2px solid #007bff;
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.3);
+    z-index: 10000;
+    min-width: 300px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.hindi-astra-ocr-modal h3 {
+    margin-top: 0;
+    color: #007bff;
+    font-size: 18px;
+}
+
+.hindi-astra-ocr-modal p {
+    margin: 10px 0;
+    font-size: 14px;
+    color: #666;
+}
+
+.hindi-astra-ocr-modal textarea {
+    width: 100%;
+    height: 100px;
+    border: 1px solid #ddd;
+    border-radius: 4px;
+    padding: 8px;
+    font-family: Arial, sans-serif;
+    resize: vertical;
+    font-size: 14px;
+}
+
+.hindi-astra-ocr-modal .button-group {
+    margin-top: 15px;
+    text-align: right;
+}
+
+.hindi-astra-ocr-modal button {
+    border: none;
+    padding: 8px 16px;
+    border-radius: 4px;
+    margin-left: 10px;
+    cursor: pointer;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.hindi-astra-ocr-modal .cancel-btn {
+    background: #6c757d;
+    color: white;
+}
+
+.hindi-astra-ocr-modal .translate-btn {
+    background: #007bff;
+    color: white;
+}
+
+.hindi-astra-ocr-modal button:hover {
+    opacity: 0.9;
+}
+
+/* Floating action button for mobile */
+.hindi-astra-fab {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    width: 56px;
+    height: 56px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    border: none;
+    color: white;
+    font-size: 24px;
+    cursor: pointer;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    z-index: 9999;
+    transition: transform 0.2s ease;
+    display: none; /* Hidden by default, shown on mobile */
+}
+
+.hindi-astra-fab:hover {
+    transform: scale(1.1);
+}
+
+.hindi-astra-fab:active {
+    transform: scale(0.95);
+}
+
+/* Dictionary panel (future feature) */
+.hindi-astra-dictionary-panel {
+    position: fixed;
+    top: 0;
+    right: -300px;
+    width: 300px;
+    height: 100vh;
+    background: white;
+    border-left: 1px solid #e9ecef;
+    box-shadow: -2px 0 10px rgba(0,0,0,0.1);
+    z-index: 9998;
+    transition: right 0.3s ease;
+    overflow-y: auto;
+}
+
+.hindi-astra-dictionary-panel.open {
+    right: 0;
+}
+
+/* Text selection cursor */
+.hindi-astra-text-selection-mode {
+    cursor: text !important;
+}
+
+.hindi-astra-text-selection-mode * {
+    cursor: text !important;
+}
+
+/* Loading overlay for PDF processing */
+.hindi-astra-loading-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10003;
+    color: white;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.hindi-astra-loading-content {
+    text-align: center;
+    background: rgba(0,0,0,0.8);
+    padding: 20px;
+    border-radius: 8px;
+}
+
+.hindi-astra-loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto 10px;
+}
+
+@keyframes spin {
+    to { transform: rotate(360deg); }
+}
+
+/* Error message styles */
+.hindi-astra-error-message {
+    position: absolute;
+    background: #ff6b6b;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 10000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Success message styles */
+.hindi-astra-success-message {
+    position: absolute;
+    background: #51cf66;
+    color: white;
+    padding: 8px 12px;
+    border-radius: 4px;
+    font-size: 12px;
+    z-index: 10000;
+    box-shadow: 0 2px 8px rgba(0,0,0,0.2);
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Mobile responsive adjustments */
+@media (max-width: 768px) {
+    .hindi-astra-fab {
+        display: block;
+    }
+    
+    .hindi-astra-popup {
+        max-width: 280px !important;
+        font-size: 13px !important;
+    }
+    
+    .hindi-astra-dictionary-panel {
+        width: 100%;
+        right: -100%;
+    }
+    
+    .hindi-astra-ocr-modal {
+        width: 90%;
+        max-width: 400px;
+        margin: 0 auto;
+    }
+}
+
+/* High contrast mode support */
+@media (prefers-contrast: high) {
+    .hindi-astra-popup {
+        border: 2px solid white;
+        background: #000;
+    }
+    
+    .hindi-astra-popup-header {
+        border-bottom: 1px solid white;
+    }
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+    .hindi-astra-popup,
+    .hindi-astra-notification,
+    .hindi-astra-tooltip,
+    .hindi-astra-fab {
+        animation: none !important;
+        transition: none !important;
+    }
+}
+
+/* Print styles - hide extension elements when printing */
+@media print {
+    .hindi-astra-popup,
+    .hindi-astra-notification,
+    .hindi-astra-fab,
+    .hindi-astra-dictionary-panel,
+    .hindi-astra-loading-overlay {
+        display: none !important;
+    }
+}

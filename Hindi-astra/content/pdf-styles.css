@@ -1,0 +1,306 @@
+/* Hindi-astra PDF-specific Styles */
+/* Styles specifically for PDF documents */
+
+/* PDF text layer enhancements */
+.textLayer {
+    user-select: text !important;
+    pointer-events: auto !important;
+}
+
+.textLayer > span {
+    user-select: text !important;
+    pointer-events: auto !important;
+    cursor: text !important;
+}
+
+/* PDF.js viewer enhancements */
+.pdfViewer .page {
+    position: relative;
+}
+
+.pdfViewer .textLayer {
+    position: absolute;
+    left: 0;
+    top: 0;
+    right: 0;
+    bottom: 0;
+    overflow: hidden;
+    opacity: 0.2;
+    line-height: 1.0;
+    user-select: text !important;
+}
+
+.pdfViewer .textLayer > span {
+    color: transparent;
+    position: absolute;
+    white-space: pre;
+    cursor: text;
+    transform-origin: 0% 0%;
+    user-select: text !important;
+}
+
+/* Enhanced text selection for PDFs */
+.pdfViewer .textLayer ::selection {
+    background: rgba(102, 126, 234, 0.3);
+}
+
+.pdfViewer .textLayer ::-moz-selection {
+    background: rgba(102, 126, 234, 0.3);
+}
+
+/* PDF overlay for scanned documents */
+.hindi-astra-pdf-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    pointer-events: auto;
+    background: transparent;
+    cursor: crosshair;
+}
+
+/* Selection rectangle for area selection */
+.hindi-astra-selection-rect {
+    position: absolute;
+    border: 2px dashed #007bff;
+    background: rgba(0, 123, 255, 0.1);
+    pointer-events: none;
+    z-index: 1001;
+    border-radius: 2px;
+}
+
+/* PDF translation popup positioning */
+.hindi-astra-pdf-popup {
+    position: absolute;
+    z-index: 10000;
+}
+
+/* Chrome PDF viewer specific styles */
+embed[type="application/pdf"] {
+    user-select: text !important;
+}
+
+/* PDF viewer toolbar adjustments */
+.toolbar {
+    z-index: 999 !important;
+}
+
+.hindi-astra-pdf-toolbar {
+    position: fixed;
+    top: 10px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 12px;
+    z-index: 10002;
+    display: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.hindi-astra-pdf-toolbar.active {
+    display: block;
+    animation: fadeInDown 0.3s ease-out;
+}
+
+@keyframes fadeInDown {
+    from {
+        opacity: 0;
+        transform: translateX(-50%) translateY(-10px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+    }
+}
+
+/* OCR assistance styles for scanned PDFs */
+.hindi-astra-ocr-hint {
+    position: absolute;
+    background: #ffc107;
+    color: #212529;
+    padding: 4px 8px;
+    border-radius: 4px;
+    font-size: 11px;
+    z-index: 10001;
+    pointer-events: none;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.hindi-astra-ocr-hint::after {
+    content: '';
+    position: absolute;
+    top: 100%;
+    left: 50%;
+    margin-left: -5px;
+    border-width: 5px;
+    border-style: solid;
+    border-color: #ffc107 transparent transparent transparent;
+}
+
+/* PDF page number indicator */
+.hindi-astra-page-indicator {
+    position: fixed;
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background: rgba(0,0,0,0.7);
+    color: white;
+    padding: 4px 12px;
+    border-radius: 12px;
+    font-size: 11px;
+    z-index: 9999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Loading indicator for PDF processing */
+.hindi-astra-pdf-loading {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(0,0,0,0.8);
+    color: white;
+    padding: 20px;
+    border-radius: 8px;
+    text-align: center;
+    z-index: 10003;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+.hindi-astra-pdf-loading .spinner {
+    width: 30px;
+    height: 30px;
+    border: 3px solid rgba(255,255,255,0.3);
+    border-radius: 50%;
+    border-top-color: white;
+    animation: spin 1s ease-in-out infinite;
+    margin: 0 auto 10px;
+}
+
+/* PDF text highlighting for better visibility */
+.hindi-astra-pdf-highlight {
+    background-color: rgba(255, 255, 0, 0.3) !important;
+    border-radius: 2px;
+    padding: 1px 2px;
+    margin: -1px -2px;
+}
+
+/* Academic paper specific styles */
+.hindi-astra-academic-indicator {
+    position: fixed;
+    top: 10px;
+    right: 10px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    color: white;
+    padding: 6px 12px;
+    border-radius: 15px;
+    font-size: 11px;
+    z-index: 9999;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Error states for PDF processing */
+.hindi-astra-pdf-error {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: #dc3545;
+    color: white;
+    padding: 15px 20px;
+    border-radius: 6px;
+    text-align: center;
+    z-index: 10003;
+    max-width: 300px;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+}
+
+/* Mobile PDF viewer adjustments */
+@media (max-width: 768px) {
+    .hindi-astra-pdf-toolbar {
+        left: 10px;
+        right: 10px;
+        transform: none;
+        width: auto;
+    }
+    
+    .hindi-astra-selection-rect {
+        border-width: 3px;
+    }
+    
+    .hindi-astra-pdf-overlay {
+        cursor: pointer;
+    }
+    
+    .hindi-astra-academic-indicator {
+        top: 5px;
+        right: 5px;
+        font-size: 10px;
+        padding: 4px 8px;
+    }
+}
+
+/* High DPI display adjustments */
+@media (-webkit-min-device-pixel-ratio: 2), (min-resolution: 192dpi) {
+    .hindi-astra-selection-rect {
+        border-width: 1px;
+    }
+    
+    .textLayer > span {
+        font-size: inherit !important;
+    }
+}
+
+/* Dark mode PDF viewer support */
+@media (prefers-color-scheme: dark) {
+    .hindi-astra-pdf-toolbar {
+        background: rgba(255,255,255,0.9);
+        color: #333;
+    }
+    
+    .hindi-astra-page-indicator {
+        background: rgba(255,255,255,0.8);
+        color: #333;
+    }
+}
+
+/* Print mode - hide all extension elements */
+@media print {
+    .hindi-astra-pdf-overlay,
+    .hindi-astra-pdf-toolbar,
+    .hindi-astra-selection-rect,
+    .hindi-astra-pdf-loading,
+    .hindi-astra-academic-indicator,
+    .hindi-astra-page-indicator {
+        display: none !important;
+    }
+}
+
+/* Accessibility improvements */
+.hindi-astra-pdf-overlay:focus {
+    outline: 2px solid #007bff;
+    outline-offset: 2px;
+}
+
+/* Animation for smooth interactions */
+.hindi-astra-pdf-highlight {
+    transition: background-color 0.2s ease;
+}
+
+.hindi-astra-selection-rect {
+    transition: all 0.1s ease;
+}
+
+/* PDF viewer compatibility fixes */
+.pdfPresentationMode .hindi-astra-pdf-overlay {
+    display: none;
+}
+
+.pdfPresentationMode .hindi-astra-pdf-toolbar {
+    display: none;
+}
