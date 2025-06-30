@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi-astra - Academic Translation Assistant</title>
+    <link rel="stylesheet" href="popup.css">
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="../icons/icon-48.png" alt="Hindi-astra" class="logo-icon">
+                <h1 class="title">Hindi-astra</h1>
+            </div>
+            <div class="status-indicator" id="statusIndicator">
+                <span class="status-dot online" id="statusDot"></span>
+                <span class="status-text" id="statusText">Online</span>
+            </div>
+        </header>
+
+        <!-- Quick Stats -->
+        <section class="stats-section">
+            <div class="stat-card">
+                <div class="stat-number" id="translationsToday">0</div>
+                <div class="stat-label">Today</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="offlineWords">0</div>
+                <div class="stat-label">Offline Words</div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-number" id="accuracy">95%</div>
+                <div class="stat-label">Accuracy</div>
+            </div>
+        </section>
+
+        <!-- Quick Translate -->
+        <section class="quick-translate">
+            <h3 class="section-title">Quick Translate</h3>
+            <div class="translate-box">
+                <textarea 
+                    id="quickInput" 
+                    placeholder="Type English text here..."
+                    rows="3"
+                ></textarea>
+                <button id="translateBtn" class="translate-btn">
+                    <span class="btn-text">Translate</span>
+                    <span class="btn-icon">🔄</span>
+                </button>
+            </div>
+            <div id="quickResult" class="result-box hidden">
+                <div class="result-text" id="resultText"></div>
+                <div class="result-meta" id="resultMeta"></div>
+            </div>
+        </section>
+
+        <!-- Features -->
+        <section class="features-section">
+            <h3 class="section-title">Features</h3>
+            <div class="feature-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">📄</div>
+                    <div class="feature-text">
+                        <div class="feature-title">PDF Support</div>
+                        <div class="feature-desc">Works with academic PDFs</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">📱</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Offline Mode</div>
+                        <div class="feature-desc">Basic translation offline</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🎓</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Academic Focus</div>
+                        <div class="feature-desc">Specialized for students</div>
+                    </div>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">⚡</div>
+                    <div class="feature-text">
+                        <div class="feature-title">Instant Translation</div>
+                        <div class="feature-desc">Select text anywhere</div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Usage Instructions -->
+        <section class="instructions-section">
+            <h3 class="section-title">How to Use</h3>
+            <div class="instruction-steps">
+                <div class="step">
+                    <div class="step-number">1</div>
+                    <div class="step-text">Select any English text on any webpage</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">2</div>
+                    <div class="step-text">View instant Hindi translation in popup</div>
+                </div>
+                <div class="step">
+                    <div class="step-number">3</div>
+                    <div class="step-text">Use Ctrl+Shift+T for keyboard shortcut</div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Settings Quick Access -->
+        <section class="settings-section">
+            <div class="setting-item">
+                <label class="setting-label">
+                    <input type="checkbox" id="autoTranslate" checked>
+                    <span class="checkmark"></span>
+                    Auto-translate on selection
+                </label>
+            </div>
+            <div class="setting-item">
+                <label class="setting-label">
+                    <input type="checkbox" id="showOriginal" checked>
+                    <span class="checkmark"></span>
+                    Show original text
+                </label>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-links">
+                <button id="settingsBtn" class="footer-btn">⚙️ Settings</button>
+                <button id="helpBtn" class="footer-btn">❓ Help</button>
+                <button id="feedbackBtn" class="footer-btn">💬 Feedback</button>
+            </div>
+            <div class="footer-info">
+                <div class="version">v1.0.0</div>
+                <div class="author">Made with ❤️ for Hindi students</div>
+            </div>
+        </footer>
+    </div>
+
+    <script src="popup.js"></script>
+</body>
+</html>

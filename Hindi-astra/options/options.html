@@ -1,0 +1,693 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi-astra Settings</title>
+    <style>
+        /* Hindi-astra Options Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+
+        .container {
+            max-width: 800px;
+            margin: 0 auto;
+            background: white;
+            min-height: 100vh;
+            box-shadow: 0 0 20px rgba(0,0,0,0.1);
+        }
+
+        /* Header */
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 20px 30px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+        }
+
+        .logo-icon {
+            width: 32px;
+            height: 32px;
+            border-radius: 6px;
+        }
+
+        .title {
+            font-size: 24px;
+            font-weight: 600;
+        }
+
+        .version {
+            background: rgba(255,255,255,0.2);
+            padding: 4px 12px;
+            border-radius: 12px;
+            font-size: 12px;
+        }
+
+        /* Navigation */
+        .nav-tabs {
+            display: flex;
+            background: #e9ecef;
+            border-bottom: 1px solid #dee2e6;
+        }
+
+        .nav-tab {
+            flex: 1;
+            padding: 12px 20px;
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: 500;
+            color: #6c757d;
+            transition: all 0.2s ease;
+        }
+
+        .nav-tab:hover {
+            background: #f8f9fa;
+            color: #495057;
+        }
+
+        .nav-tab.active {
+            background: white;
+            color: #667eea;
+            border-bottom: 2px solid #667eea;
+        }
+
+        /* Tab Content */
+        .tab-content {
+            display: none;
+            padding: 30px;
+        }
+
+        .tab-content.active {
+            display: block;
+        }
+
+        .tab-content h2 {
+            font-size: 20px;
+            color: #495057;
+            margin-bottom: 20px;
+            padding-bottom: 10px;
+            border-bottom: 2px solid #e9ecef;
+        }
+
+        /* Setting Groups */
+        .setting-group {
+            margin-bottom: 30px;
+            background: #f8f9fa;
+            padding: 20px;
+            border-radius: 8px;
+        }
+
+        .setting-group h3 {
+            font-size: 16px;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .setting-item {
+            margin-bottom: 15px;
+        }
+
+        .setting-label {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            cursor: pointer;
+            user-select: none;
+        }
+
+        .setting-text {
+            flex: 1;
+        }
+
+        .setting-title {
+            font-size: 14px;
+            font-weight: 500;
+            color: #495057;
+            margin-bottom: 2px;
+        }
+
+        .setting-desc {
+            font-size: 12px;
+            color: #6c757d;
+            line-height: 1.4;
+        }
+
+        /* Checkboxes */
+        .setting-label input[type="checkbox"] {
+            display: none;
+        }
+
+        .checkmark {
+            width: 18px;
+            height: 18px;
+            border: 2px solid #dee2e6;
+            border-radius: 4px;
+            position: relative;
+            transition: all 0.2s ease;
+            flex-shrink: 0;
+            margin-top: 2px;
+        }
+
+        .setting-label input[type="checkbox"]:checked + .checkmark {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border-color: #667eea;
+        }
+
+        .setting-label input[type="checkbox"]:checked + .checkmark::after {
+            content: '✓';
+            position: absolute;
+            top: -1px;
+            left: 3px;
+            color: white;
+            font-size: 12px;
+            font-weight: bold;
+        }
+
+        /* Select and Range inputs */
+        .setting-select, .setting-range {
+            padding: 8px 12px;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            font-size: 14px;
+            background: white;
+        }
+
+        .setting-select {
+            min-width: 150px;
+        }
+
+        .setting-range {
+            width: 200px;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 15px;
+            margin-bottom: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            padding: 15px;
+            border-radius: 8px;
+            text-align: center;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+
+        .stat-number {
+            font-size: 18px;
+            font-weight: 700;
+            color: #667eea;
+            margin-bottom: 4px;
+        }
+
+        .stat-label {
+            font-size: 11px;
+            color: #6c757d;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 6px;
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            text-decoration: none;
+            display: inline-block;
+            text-align: center;
+        }
+
+        .btn-primary {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-1px);
+            box-shadow: 0 4px 8px rgba(102, 126, 234, 0.3);
+        }
+
+        .btn-secondary {
+            background: #6c757d;
+            color: white;
+        }
+
+        .btn-secondary:hover {
+            background: #5a6268;
+        }
+
+        .btn-danger {
+            background: #dc3545;
+            color: white;
+        }
+
+        .btn-danger:hover {
+            background: #c82333;
+        }
+
+        .button-group {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Subject Grid */
+        .subject-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            gap: 10px;
+        }
+
+        .subject-item {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px 12px;
+            background: white;
+            border-radius: 6px;
+            cursor: pointer;
+            transition: background-color 0.2s ease;
+        }
+
+        .subject-item:hover {
+            background: #e9ecef;
+        }
+
+        .subject-item input[type="checkbox"] {
+            margin: 0;
+        }
+
+        .subject-name {
+            font-size: 13px;
+            color: #495057;
+        }
+
+        /* About Content */
+        .about-content {
+            max-width: 600px;
+        }
+
+        .about-section {
+            margin-bottom: 25px;
+        }
+
+        .about-section h3 {
+            font-size: 16px;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .about-section p {
+            color: #6c757d;
+            margin-bottom: 8px;
+        }
+
+        .about-section ul {
+            color: #6c757d;
+            padding-left: 20px;
+        }
+
+        .about-section li {
+            margin-bottom: 5px;
+        }
+
+        .link-buttons {
+            display: flex;
+            gap: 10px;
+            flex-wrap: wrap;
+        }
+
+        /* Footer */
+        .footer {
+            background: #f8f9fa;
+            padding: 20px 30px;
+            border-top: 1px solid #dee2e6;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .footer-actions {
+            display: flex;
+            gap: 10px;
+        }
+
+        .footer-info {
+            font-size: 12px;
+            color: #6c757d;
+        }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .container {
+                margin: 0;
+                box-shadow: none;
+            }
+
+            .header {
+                padding: 15px 20px;
+            }
+
+            .tab-content {
+                padding: 20px;
+            }
+
+            .stats-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .footer {
+                flex-direction: column;
+                text-align: center;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <!-- Header -->
+        <header class="header">
+            <div class="logo">
+                <img src="../icons/icon-48.png" alt="Hindi-astra" class="logo-icon">
+                <h1 class="title">Hindi-astra Settings</h1>
+            </div>
+            <div class="version">v1.0.0</div>
+        </header>
+
+        <!-- Navigation -->
+        <nav class="nav-tabs">
+            <button class="nav-tab active" data-tab="general">General</button>
+            <button class="nav-tab" data-tab="translation">Translation</button>
+            <button class="nav-tab" data-tab="offline">Offline</button>
+            <button class="nav-tab" data-tab="academic">Academic</button>
+            <button class="nav-tab" data-tab="about">About</button>
+        </nav>
+
+        <!-- General Settings -->
+        <section id="general" class="tab-content active">
+            <h2>General Settings</h2>
+            
+            <div class="setting-group">
+                <h3>Translation Behavior</h3>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="autoTranslate">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">Auto-translate on selection</div>
+                            <div class="setting-desc">Automatically show translation when text is selected</div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="showOriginal">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">Show original text</div>
+                            <div class="setting-desc">Display source English text with translation</div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="contextMenu">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">Enable context menu</div>
+                            <div class="setting-desc">Add "Translate to Hindi" to right-click menu</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>Appearance</h3>
+                <div class="setting-item">
+                    <label class="setting-title">Font Size</label>
+                    <select id="fontSize" class="setting-select">
+                        <option value="small">Small</option>
+                        <option value="medium">Medium</option>
+                        <option value="large">Large</option>
+                    </select>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-title">Theme</label>
+                    <select id="theme" class="setting-select">
+                        <option value="modern">Modern</option>
+                        <option value="classic">Classic</option>
+                        <option value="academic">Academic</option>
+                    </select>
+                </div>
+            </div>
+        </section>
+
+        <!-- Translation Settings -->
+        <section id="translation" class="tab-content">
+            <h2>Translation Settings</h2>
+            
+            <div class="setting-group">
+                <h3>Translation Engine</h3>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="preferOnline">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">Prefer online translation</div>
+                            <div class="setting-desc">Use Google Translate API when available for better accuracy</div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-title">Max text length</label>
+                    <input type="range" id="maxLength" min="50" max="500" value="200" class="setting-range">
+                    <span id="maxLengthValue">200</span> characters
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>Translation Quality</h3>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="showConfidence">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">Show confidence score</div>
+                            <div class="setting-desc">Display translation accuracy percentage</div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="cacheTranslations">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">Cache translations</div>
+                            <div class="setting-desc">Save translations for faster future access</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- Offline Settings -->
+        <section id="offline" class="tab-content">
+            <h2>Offline Dictionary</h2>
+            
+            <div class="stats-grid">
+                <div class="stat-card">
+                    <div class="stat-number" id="offlineWordsCount">0</div>
+                    <div class="stat-label">Cached Words</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="academicTermsCount">0</div>
+                    <div class="stat-label">Academic Terms</div>
+                </div>
+                <div class="stat-card">
+                    <div class="stat-number" id="lastUpdated">Never</div>
+                    <div class="stat-label">Last Updated</div>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>Offline Mode</h3>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="enableOffline">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">Enable offline translation</div>
+                            <div class="setting-desc">Use local dictionary when internet is unavailable</div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-title">Dictionary size limit</label>
+                    <select id="dictSize" class="setting-select">
+                        <option value="500">500 words</option>
+                        <option value="1000">1000 words</option>
+                        <option value="2000">2000 words</option>
+                        <option value="5000">5000 words</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>Dictionary Management</h3>
+                <div class="button-group">
+                    <button id="exportDict" class="btn btn-secondary">Export Dictionary</button>
+                    <button id="importDict" class="btn btn-secondary">Import Dictionary</button>
+                    <button id="clearDict" class="btn btn-danger">Clear Dictionary</button>
+                </div>
+                <input type="file" id="importFile" accept=".json" style="display: none;">
+            </div>
+        </section>
+
+        <!-- Academic Settings -->
+        <section id="academic" class="tab-content">
+            <h2>Academic Features</h2>
+            
+            <div class="setting-group">
+                <h3>Subject Specialization</h3>
+                <div class="subject-grid">
+                    <label class="subject-item">
+                        <input type="checkbox" id="mathematics" checked>
+                        <span class="subject-name">Mathematics</span>
+                    </label>
+                    <label class="subject-item">
+                        <input type="checkbox" id="science" checked>
+                        <span class="subject-name">Science</span>
+                    </label>
+                    <label class="subject-item">
+                        <input type="checkbox" id="literature" checked>
+                        <span class="subject-name">Literature</span>
+                    </label>
+                    <label class="subject-item">
+                        <input type="checkbox" id="history" checked>
+                        <span class="subject-name">History</span>
+                    </label>
+                    <label class="subject-item">
+                        <input type="checkbox" id="economics" checked>
+                        <span class="subject-name">Economics</span>
+                    </label>
+                    <label class="subject-item">
+                        <input type="checkbox" id="psychology" checked>
+                        <span class="subject-name">Psychology</span>
+                    </label>
+                </div>
+            </div>
+
+            <div class="setting-group">
+                <h3>PDF & Document Support</h3>
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="pdfSupport">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">Enable PDF translation</div>
+                            <div class="setting-desc">Translate text in PDF documents</div>
+                        </div>
+                    </label>
+                </div>
+                
+                <div class="setting-item">
+                    <label class="setting-label">
+                        <input type="checkbox" id="ocrSupport">
+                        <span class="checkmark"></span>
+                        <div class="setting-text">
+                            <div class="setting-title">OCR for scanned documents</div>
+                            <div class="setting-desc">Extract text from scanned PDFs and images</div>
+                        </div>
+                    </label>
+                </div>
+            </div>
+        </section>
+
+        <!-- About -->
+        <section id="about" class="tab-content">
+            <h2>About Hindi-astra</h2>
+            
+            <div class="about-content">
+                <div class="about-section">
+                    <h3>🎓 Mission</h3>
+                    <p>Hindi-astra is designed to help Hindi-speaking students excel in their academic journey by providing instant, accurate translations of English academic content.</p>
+                </div>
+                
+                <div class="about-section">
+                    <h3>✨ Features</h3>
+                    <ul>
+                        <li>📄 PDF and document translation support</li>
+                        <li>🌐 Online and offline translation modes</li>
+                        <li>🎓 Academic terminology specialization</li>
+                        <li>⚡ Instant text selection translation</li>
+                        <li>📱 Mobile-friendly interface</li>
+                    </ul>
+                </div>
+                
+                <div class="about-section">
+                    <h3>👨‍💻 Developer</h3>
+                    <p>Created with ❤️ by <strong>Aman Sah</strong></p>
+                    <p>Email: amansah1717@gmail.com</p>
+                    <p>GitHub: <a href="https://github.com/AmanSah17" target="_blank">@AmanSah17</a></p>
+                </div>
+                
+                <div class="about-section">
+                    <h3>🔗 Links</h3>
+                    <div class="link-buttons">
+                        <a href="https://github.com/AmanSah17/chrome_extension_react/tree/Hindi-astra" target="_blank" class="btn btn-primary">GitHub Repository</a>
+                        <a href="mailto:amansah1717@gmail.com?subject=Hindi-astra Feedback" class="btn btn-secondary">Send Feedback</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <div class="footer-actions">
+                <button id="saveSettings" class="btn btn-primary">Save Settings</button>
+                <button id="resetSettings" class="btn btn-secondary">Reset to Default</button>
+            </div>
+            <div class="footer-info">
+                <span>Hindi-astra v1.0.0 - Academic Translation Assistant</span>
+            </div>
+        </footer>
+    </div>
+
+    <script src="options.js"></script>
+</body>
+</html>

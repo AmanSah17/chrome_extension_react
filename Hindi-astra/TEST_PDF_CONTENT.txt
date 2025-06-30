@@ -1,0 +1,92 @@
+# Test PDF Content for Hindi-astra
+
+## Create a Test PDF with this content:
+
+### Simple Test Sentences:
+Hello world.
+This is a test document.
+Computer science is important.
+Students need to study hard.
+Research and development are crucial.
+
+### Academic Terms:
+- Analysis
+- Research
+- Study
+- Theory
+- Method
+- Result
+- Conclusion
+- Hypothesis
+- Experiment
+- Literature
+
+### Common Words:
+- Computer
+- Education
+- Science
+- Mathematics
+- History
+- Geography
+- Economics
+- Psychology
+- Philosophy
+- Technology
+
+### Test Sentences:
+1. The research methodology was comprehensive.
+2. Students analyzed the experimental data.
+3. The hypothesis was proven correct.
+4. Literature review is essential for research.
+5. Computer algorithms solve complex problems.
+
+## How to Create Test PDF:
+
+### Method 1: Google Docs
+1. Open Google Docs
+2. Copy and paste the content above
+3. Go to File → Download → PDF Document (.pdf)
+4. Save to your computer
+5. Open the saved PDF in Chrome
+
+### Method 2: Microsoft Word
+1. Open Microsoft Word
+2. Copy and paste the content above
+3. Go to File → Save As → PDF
+4. Save to your computer
+5. Open the saved PDF in Chrome
+
+### Method 3: Online PDF Creator
+1. Go to any online text-to-PDF converter
+2. Paste the content above
+3. Generate and download PDF
+4. Open in Chrome
+
+## Testing Instructions:
+
+1. **Open the PDF** in Chrome (drag & drop or Ctrl+O)
+2. **Verify URL** starts with file://
+3. **Look for green indicator** "Hindi-astra Ready"
+4. **Select any English text** from the content
+5. **Expect Hindi translation** popup to appear
+6. **Try keyboard shortcut** Ctrl+Shift+T after selecting text
+
+## Expected Translations:
+
+- Hello world → हैलो वर्ल्ड
+- Computer → कंप्यूटर
+- Research → अनुसंधान
+- Study → अध्ययन
+- Education → शिक्षा
+- Science → विज्ञान
+- Analysis → विश्लेषण
+- Student → छात्र
+
+## If Translation Doesn't Work:
+
+1. Check console (F12) for error messages
+2. Verify "Allow access to file URLs" is enabled
+3. Reload the extension
+4. Restart Chrome
+5. Try different text selections
+6. Use the LOCAL_PDF_TEST.html page for diagnostics

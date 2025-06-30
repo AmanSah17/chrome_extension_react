@@ -1,0 +1,301 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Hindi-astra Local PDF Test</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            max-width: 800px;
+            margin: 0 auto;
+            padding: 20px;
+            line-height: 1.6;
+        }
+        .test-section {
+            background: #f8f9fa;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 20px 0;
+            border-left: 4px solid #007bff;
+        }
+        .success { border-left-color: #28a745; background: #d4edda; }
+        .warning { border-left-color: #ffc107; background: #fff3cd; }
+        .error { border-left-color: #dc3545; background: #f8d7da; }
+        button {
+            background: #007bff;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin: 5px;
+        }
+        button:hover { background: #0056b3; }
+        .test-text {
+            background: white;
+            padding: 15px;
+            border-radius: 5px;
+            border: 2px dashed #007bff;
+            margin: 10px 0;
+            user-select: text;
+        }
+        pre {
+            background: #f1f1f1;
+            padding: 10px;
+            border-radius: 5px;
+            overflow-x: auto;
+        }
+        .status {
+            font-weight: bold;
+            padding: 5px 10px;
+            border-radius: 3px;
+            display: inline-block;
+            margin: 5px 0;
+        }
+        .status.pass { background: #d4edda; color: #155724; }
+        .status.fail { background: #f8d7da; color: #721c24; }
+        .status.unknown { background: #e2e3e5; color: #383d41; }
+    </style>
+</head>
+<body>
+    <h1>🧪 Hindi-astra Local PDF Test Page</h1>
+    
+    <div class="test-section">
+        <h2>📋 Pre-Test Checklist</h2>
+        <p>Before testing, ensure:</p>
+        <ul>
+            <li>✅ Hindi-astra extension is installed and enabled</li>
+            <li>✅ "Allow access to file URLs" is enabled in extension settings</li>
+            <li>✅ Chrome has been restarted after enabling file access</li>
+            <li>✅ This page is opened as a local file (file:// URL)</li>
+        </ul>
+        <p><strong>Current URL:</strong> <span id="currentUrl"></span></p>
+        <div id="urlStatus"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔍 Extension Detection Test</h2>
+        <button onclick="testExtensionDetection()">Test Extension Detection</button>
+        <div id="extensionStatus"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📄 Text Selection Test</h2>
+        <p>Select the English text below to test translation:</p>
+        <div class="test-text">
+            <p>Hello world. This is a test sentence for Hindi translation.</p>
+            <p>Computer science is an important subject for students.</p>
+            <p>Research and development are crucial for innovation.</p>
+        </div>
+        <p><strong>Instructions:</strong></p>
+        <ol>
+            <li>Select any English text above</li>
+            <li>A Hindi translation popup should appear</li>
+            <li>Try keyboard shortcut: Ctrl+Shift+T</li>
+        </ol>
+        <div id="selectionStatus"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>🔧 Debug Information</h2>
+        <button onclick="runDiagnostics()">Run Full Diagnostics</button>
+        <button onclick="exportDebugInfo()">Export Debug Info</button>
+        <div id="debugOutput"></div>
+    </div>
+
+    <div class="test-section">
+        <h2>📞 Troubleshooting</h2>
+        <h3>Common Issues:</h3>
+        <ul>
+            <li><strong>No translation popup:</strong> Check file URL permission</li>
+            <li><strong>Extension not detected:</strong> Reload extension</li>
+            <li><strong>Console errors:</strong> Check browser console (F12)</li>
+        </ul>
+        <button onclick="showTroubleshootingSteps()">Show Detailed Steps</button>
+        <div id="troubleshootingSteps" style="display: none;"></div>
+    </div>
+
+    <script>
+        // Update current URL
+        document.getElementById('currentUrl').textContent = window.location.href;
+        
+        // Check if this is a local file
+        const isLocalFile = window.location.protocol === 'file:';
+        const urlStatus = document.getElementById('urlStatus');
+        if (isLocalFile) {
+            urlStatus.innerHTML = '<div class="status pass">✅ Local file detected</div>';
+        } else {
+            urlStatus.innerHTML = '<div class="status fail">❌ Not a local file - open this as file:// URL</div>';
+        }
+
+        function testExtensionDetection() {
+            const statusDiv = document.getElementById('extensionStatus');
+            let results = [];
+
+            // Check for extension components
+            const components = {
+                'Direct PDF Injector': 'hindiAstraLocalPDFFixer',
+                'PDF Detector': 'hindiAstraPDFDetector',
+                'Translation Engine': 'hindiAstraEngine',
+                'Main Translator': 'hindiAstraTranslator',
+                'UI Components': 'hindiAstraUI',
+                'OCR Engine': 'hindiAstraOCR',
+                'Debug Helper': 'hindiAstraDebugHelper'
+            };
+
+            for (const [name, variable] of Object.entries(components)) {
+                const exists = window[variable] !== undefined;
+                results.push(`<div class="status ${exists ? 'pass' : 'fail'}">${exists ? '✅' : '❌'} ${name}</div>`);
+            }
+
+            // Check for debug commands
+            const hasDebugCommands = window.hindiAstraDebug !== undefined;
+            results.push(`<div class="status ${hasDebugCommands ? 'pass' : 'fail'}">${hasDebugCommands ? '✅' : '❌'} Debug Commands</div>`);
+
+            statusDiv.innerHTML = results.join('');
+
+            // Show additional info if debug is available
+            if (hasDebugCommands) {
+                setTimeout(() => {
+                    try {
+                        window.hindiAstraDebug.info();
+                    } catch (e) {
+                        console.log('Debug info not available');
+                    }
+                }, 1000);
+            }
+        }
+
+        function runDiagnostics() {
+            const outputDiv = document.getElementById('debugOutput');
+            outputDiv.innerHTML = '<p>Running diagnostics...</p>';
+
+            let diagnostics = [];
+
+            // Basic checks
+            diagnostics.push(`<h4>Environment:</h4>`);
+            diagnostics.push(`URL: ${window.location.href}`);
+            diagnostics.push(`Protocol: ${window.location.protocol}`);
+            diagnostics.push(`User Agent: ${navigator.userAgent}`);
+            diagnostics.push(`Chrome Version: ${navigator.userAgent.match(/Chrome\/(\d+)/)?.[1] || 'Unknown'}`);
+
+            // Extension checks
+            diagnostics.push(`<h4>Extension Status:</h4>`);
+            if (window.hindiAstraDebug) {
+                try {
+                    const info = window.hindiAstraDebug.info();
+                    diagnostics.push(`Debug commands available: ✅`);
+                } catch (e) {
+                    diagnostics.push(`Debug commands error: ${e.message}`);
+                }
+            } else {
+                diagnostics.push(`Debug commands: ❌ Not available`);
+            }
+
+            // File access check
+            diagnostics.push(`<h4>Permissions:</h4>`);
+            if (chrome && chrome.extension) {
+                chrome.extension.isAllowedFileSchemeAccess((allowed) => {
+                    diagnostics.push(`File URL access: ${allowed ? '✅ Enabled' : '❌ Disabled'}`);
+                    outputDiv.innerHTML = `<pre>${diagnostics.join('\n')}</pre>`;
+                });
+            } else {
+                diagnostics.push(`File URL access: ❓ Cannot check`);
+                outputDiv.innerHTML = `<pre>${diagnostics.join('\n')}</pre>`;
+            }
+        }
+
+        function exportDebugInfo() {
+            const debugData = {
+                timestamp: new Date().toISOString(),
+                url: window.location.href,
+                userAgent: navigator.userAgent,
+                extensionComponents: {},
+                hasDebugCommands: !!window.hindiAstraDebug
+            };
+
+            // Check extension components
+            const components = [
+                'hindiAstraLocalPDFFixer',
+                'hindiAstraPDFDetector', 
+                'hindiAstraEngine',
+                'hindiAstraTranslator',
+                'hindiAstraUI',
+                'hindiAstraOCR'
+            ];
+
+            components.forEach(comp => {
+                debugData.extensionComponents[comp] = !!window[comp];
+            });
+
+            const debugText = JSON.stringify(debugData, null, 2);
+            
+            // Copy to clipboard
+            navigator.clipboard.writeText(debugText).then(() => {
+                alert('Debug info copied to clipboard!');
+            }).catch(() => {
+                // Fallback: show in alert
+                prompt('Debug info (copy this):', debugText);
+            });
+        }
+
+        function showTroubleshootingSteps() {
+            const stepsDiv = document.getElementById('troubleshootingSteps');
+            stepsDiv.style.display = stepsDiv.style.display === 'none' ? 'block' : 'none';
+            
+            if (stepsDiv.style.display === 'block') {
+                stepsDiv.innerHTML = `
+                    <h4>Detailed Troubleshooting Steps:</h4>
+                    <ol>
+                        <li><strong>Check Extension:</strong>
+                            <ul>
+                                <li>Go to chrome://extensions/</li>
+                                <li>Find "Hindi-astra" extension</li>
+                                <li>Ensure it's enabled (blue toggle)</li>
+                            </ul>
+                        </li>
+                        <li><strong>Enable File Access:</strong>
+                            <ul>
+                                <li>Click "Details" on Hindi-astra</li>
+                                <li>Enable "Allow access to file URLs"</li>
+                                <li>Restart Chrome completely</li>
+                            </ul>
+                        </li>
+                        <li><strong>Test with Console:</strong>
+                            <ul>
+                                <li>Press F12 to open Developer Tools</li>
+                                <li>Go to Console tab</li>
+                                <li>Type: hindiAstraDebug.test()</li>
+                                <li>Check for error messages</li>
+                            </ul>
+                        </li>
+                        <li><strong>Reload Extension:</strong>
+                            <ul>
+                                <li>Go to chrome://extensions/</li>
+                                <li>Click reload button on Hindi-astra</li>
+                                <li>Refresh this page</li>
+                            </ul>
+                        </li>
+                    </ol>
+                `;
+            }
+        }
+
+        // Auto-run extension detection on load
+        setTimeout(testExtensionDetection, 2000);
+
+        // Add selection listener for testing
+        document.addEventListener('mouseup', () => {
+            const selection = window.getSelection().toString().trim();
+            if (selection) {
+                const statusDiv = document.getElementById('selectionStatus');
+                statusDiv.innerHTML = `<div class="status unknown">📝 Text selected: "${selection}" - Waiting for translation popup...</div>`;
+            }
+        });
+
+        console.log('🧪 Hindi-astra Local PDF Test Page loaded');
+        console.log('📄 Run testExtensionDetection() to check extension status');
+    </script>
+</body>
+</html>

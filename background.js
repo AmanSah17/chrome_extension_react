@@ -87,3 +87,10 @@ async function translateText(text) {
     }
 }
 
+
+
+
+
+
+
+

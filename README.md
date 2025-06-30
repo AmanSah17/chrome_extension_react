@@ -1,5 +1,9 @@
 # 🌐 Hindi Translation Chrome Extension
 
+> **🚀 New Enhanced Version Available: [Hindi-astra Branch](./Hindi-astra/)**
+>
+> **Hindi-astra** is our advanced academic translation assistant specifically designed for Hindi-speaking students working with English academic content, including PDFs, Word documents, and scanned materials.
+
 [![Chrome Extension](https://img.shields.io/badge/Chrome-Extension-4285F4?style=for-the-badge&logo=googlechrome&logoColor=white)](https://github.com/AmanSah17/chrome_extension_react)
 [![JavaScript](https://img.shields.io/badge/JavaScript-ES6+-F7DF1E?style=for-the-badge&logo=javascript&logoColor=black)](https://developer.mozilla.org/en-US/docs/Web/JavaScript)
 [![Google Translate API](https://img.shields.io/badge/Google_Translate-API-4285F4?style=for-the-badge&logo=google&logoColor=white)](https://cloud.google.com/translate)
