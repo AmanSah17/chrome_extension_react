@@ -244,68 +244,52 @@
     }
     
     /**
-     * Translate text
+     * Translate text with synonyms support
      */
     async function translateText() {
         if (isTranslating) return;
-        
+
         const input = document.getElementById('hindi-global-input');
         const text = input.value.trim();
-        
+
         if (!text) {
             showError('Please paste some text to translate');
             return;
         }
-        
+
         const translateBtn = document.getElementById('hindi-global-translate');
         const resultDiv = document.getElementById('hindi-global-result');
         const errorDiv = document.getElementById('hindi-global-error');
-        const resultText = document.getElementById('hindi-global-result-text');
-        
+
         isTranslating = true;
         translateBtn.textContent = 'Translating...';
         translateBtn.disabled = true;
         resultDiv.style.display = 'none';
         errorDiv.style.display = 'none';
-        
+
         try {
             console.log('🔄 Global translator translating:', text);
-            
-            const response = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`, {
-                method: 'POST',
-                headers: { 
-                    'Content-Type': 'application/json',
-                    'Accept': 'application/json'
-                },
-                body: JSON.stringify({
-                    q: text,
-                    source: 'en',
-                    target: 'hi',
-                    format: 'text'
-                })
-            });
-            
-            console.log('📡 Global API Response status:', response.status);
-            
-            if (!response.ok) {
-                const errorText = await response.text();
-                console.error('❌ Global API Error:', response.status, errorText);
-                throw new Error(`API Error: ${response.status}`);
+
+            // Check if it's a single word for synonym support
+            const isSingleWord = text.split(/\s+/).length === 1 && /^[a-zA-Z]+$/.test(text);
+
+            // Get main translation
+            const translation = await getMainTranslation(text);
+
+            // Get synonyms if it's a single word
+            let synonyms = [];
+            if (isSingleWord) {
+                try {
+                    synonyms = await getSynonyms(text);
+                    console.log('📚 Synonyms found:', synonyms);
+                } catch (synonymError) {
+                    console.log('⚠️ Could not fetch synonyms:', synonymError.message);
+                }
             }
-            
-            const data = await response.json();
-            console.log('📄 Global API Response data:', data);
-            
-            if (data.data && data.data.translations && data.data.translations.length > 0) {
-                const translation = data.data.translations[0].translatedText;
-                resultText.textContent = translation;
-                resultDiv.style.display = 'block';
-                console.log('✅ Global translation successful:', translation);
-            } else {
-                console.error('❌ No translation in global response:', data);
-                throw new Error('No translation found in response');
-            }
-            
+
+            // Display results
+            displayTranslationResults(translation, synonyms, isSingleWord);
+
         } catch (error) {
             console.error('❌ Global translation error:', error);
             showError(`Translation failed: ${error.message}`);
@@ -315,14 +299,234 @@
             isTranslating = false;
         }
     }
+
+    /**
+     * Get main translation from Google Translate API
+     */
+    async function getMainTranslation(text) {
+        const response = await fetch(`https://translation.googleapis.com/language/translate/v2?key=${API_KEY}`, {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json',
+                'Accept': 'application/json'
+            },
+            body: JSON.stringify({
+                q: text,
+                source: 'en',
+                target: 'hi',
+                format: 'text'
+            })
+        });
+
+        console.log('📡 Global API Response status:', response.status);
+
+        if (!response.ok) {
+            const errorText = await response.text();
+            console.error('❌ Global API Error:', response.status, errorText);
+            throw new Error(`API Error: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log('📄 Global API Response data:', data);
+
+        if (data.data && data.data.translations && data.data.translations.length > 0) {
+            const translation = data.data.translations[0].translatedText;
+            console.log('✅ Global translation successful:', translation);
+            return translation;
+        } else {
+            console.error('❌ No translation in global response:', data);
+            throw new Error('No translation found in response');
+        }
+    }
     
+    /**
+     * Get synonyms for a word using multiple sources
+     */
+    async function getSynonyms(word) {
+        const synonyms = [];
+
+        try {
+            // Method 1: Use a built-in synonym dictionary for common words
+            const commonSynonyms = getCommonSynonyms(word.toLowerCase());
+            if (commonSynonyms.length > 0) {
+                synonyms.push(...commonSynonyms);
+            }
+
+            // Method 2: Try to get synonyms from a free API (if available)
+            try {
+                const apiSynonyms = await fetchSynonymsFromAPI(word);
+                if (apiSynonyms.length > 0) {
+                    synonyms.push(...apiSynonyms);
+                }
+            } catch (apiError) {
+                console.log('API synonyms not available:', apiError.message);
+            }
+
+            // Remove duplicates and limit to 5 synonyms
+            const uniqueSynonyms = [...new Set(synonyms)].slice(0, 5);
+            return uniqueSynonyms;
+
+        } catch (error) {
+            console.log('Error getting synonyms:', error);
+            return [];
+        }
+    }
+
+    /**
+     * Get synonyms from built-in dictionary for common words
+     */
+    function getCommonSynonyms(word) {
+        const synonymDict = {
+            'happy': ['joyful', 'cheerful', 'glad', 'pleased', 'content'],
+            'sad': ['unhappy', 'sorrowful', 'melancholy', 'dejected', 'gloomy'],
+            'big': ['large', 'huge', 'enormous', 'massive', 'giant'],
+            'small': ['tiny', 'little', 'miniature', 'petite', 'compact'],
+            'good': ['excellent', 'great', 'wonderful', 'fine', 'superb'],
+            'bad': ['terrible', 'awful', 'horrible', 'poor', 'dreadful'],
+            'fast': ['quick', 'rapid', 'swift', 'speedy', 'hasty'],
+            'slow': ['sluggish', 'gradual', 'leisurely', 'unhurried', 'delayed'],
+            'beautiful': ['gorgeous', 'lovely', 'attractive', 'stunning', 'pretty'],
+            'ugly': ['hideous', 'unattractive', 'unsightly', 'repulsive', 'grotesque'],
+            'smart': ['intelligent', 'clever', 'bright', 'brilliant', 'wise'],
+            'stupid': ['foolish', 'dumb', 'ignorant', 'silly', 'senseless'],
+            'strong': ['powerful', 'mighty', 'robust', 'sturdy', 'tough'],
+            'weak': ['feeble', 'frail', 'fragile', 'delicate', 'powerless'],
+            'hot': ['warm', 'heated', 'burning', 'scorching', 'blazing'],
+            'cold': ['chilly', 'freezing', 'icy', 'frigid', 'cool'],
+            'easy': ['simple', 'effortless', 'straightforward', 'uncomplicated', 'basic'],
+            'difficult': ['hard', 'challenging', 'tough', 'complex', 'complicated'],
+            'new': ['fresh', 'recent', 'modern', 'latest', 'novel'],
+            'old': ['ancient', 'aged', 'elderly', 'vintage', 'antique'],
+            'important': ['significant', 'crucial', 'vital', 'essential', 'critical'],
+            'observe': ['watch', 'notice', 'see', 'examine', 'study'],
+            'study': ['learn', 'examine', 'research', 'analyze', 'investigate'],
+            'understand': ['comprehend', 'grasp', 'realize', 'perceive', 'know'],
+            'explain': ['describe', 'clarify', 'illustrate', 'demonstrate', 'elucidate'],
+            'analyze': ['examine', 'study', 'investigate', 'evaluate', 'assess'],
+            'create': ['make', 'produce', 'generate', 'build', 'construct'],
+            'develop': ['grow', 'evolve', 'advance', 'progress', 'expand'],
+            'improve': ['enhance', 'better', 'upgrade', 'refine', 'perfect'],
+            'solve': ['resolve', 'fix', 'settle', 'answer', 'work out'],
+            'discuss': ['talk about', 'debate', 'converse', 'examine', 'consider']
+        };
+
+        return synonymDict[word] || [];
+    }
+
+    /**
+     * Fetch synonyms from external API (placeholder for future implementation)
+     */
+    async function fetchSynonymsFromAPI(word) {
+        // This is a placeholder for future API integration
+        // You could integrate with APIs like:
+        // - Merriam-Webster API
+        // - WordsAPI
+        // - Datamuse API
+        // For now, return empty array
+        return [];
+    }
+
+    /**
+     * Display translation results with synonyms
+     */
+    function displayTranslationResults(translation, synonyms, isSingleWord) {
+        const resultDiv = document.getElementById('hindi-global-result');
+
+        // Clear previous content
+        resultDiv.innerHTML = '';
+
+        // Create main translation section
+        const mainSection = document.createElement('div');
+        mainSection.style.cssText = `
+            margin-bottom: ${synonyms.length > 0 ? '15px' : '0'};
+        `;
+
+        const statusDiv = document.createElement('div');
+        statusDiv.style.cssText = `
+            font-size: 12px;
+            opacity: 0.8;
+            margin-bottom: 8px;
+            display: flex;
+            align-items: center;
+            gap: 5px;
+        `;
+        statusDiv.innerHTML = `
+            <span>🌐</span>
+            <span>Google Translate • Success</span>
+        `;
+
+        const translationDiv = document.createElement('div');
+        translationDiv.style.cssText = `
+            font-size: 16px;
+            line-height: 1.4;
+            font-weight: 500;
+            color: white;
+        `;
+        translationDiv.textContent = translation;
+
+        mainSection.appendChild(statusDiv);
+        mainSection.appendChild(translationDiv);
+        resultDiv.appendChild(mainSection);
+
+        // Add synonyms section if available
+        if (synonyms.length > 0 && isSingleWord) {
+            const synonymsSection = document.createElement('div');
+            synonymsSection.style.cssText = `
+                border-top: 1px solid rgba(255,255,255,0.2);
+                padding-top: 15px;
+                margin-top: 15px;
+            `;
+
+            const synonymsTitle = document.createElement('div');
+            synonymsTitle.style.cssText = `
+                font-size: 12px;
+                opacity: 0.8;
+                margin-bottom: 8px;
+                display: flex;
+                align-items: center;
+                gap: 5px;
+            `;
+            synonymsTitle.innerHTML = `
+                <span>📚</span>
+                <span>English Synonyms</span>
+            `;
+
+            const synonymsList = document.createElement('div');
+            synonymsList.style.cssText = `
+                display: flex;
+                flex-wrap: wrap;
+                gap: 6px;
+            `;
+
+            synonyms.forEach(synonym => {
+                const synonymTag = document.createElement('span');
+                synonymTag.style.cssText = `
+                    background: rgba(255,255,255,0.15);
+                    color: white;
+                    padding: 4px 8px;
+                    border-radius: 12px;
+                    font-size: 12px;
+                    border: 1px solid rgba(255,255,255,0.2);
+                `;
+                synonymTag.textContent = synonym;
+                synonymsList.appendChild(synonymTag);
+            });
+
+            synonymsSection.appendChild(synonymsTitle);
+            synonymsSection.appendChild(synonymsList);
+            resultDiv.appendChild(synonymsSection);
+        }
+
+        resultDiv.style.display = 'block';
+    }
+
     /**
      * Show error message
      */
     function showError(message) {
         const errorDiv = document.getElementById('hindi-global-error');
         const resultDiv = document.getElementById('hindi-global-result');
-        
+
         errorDiv.textContent = message;
         errorDiv.style.display = 'block';
         resultDiv.style.display = 'none';

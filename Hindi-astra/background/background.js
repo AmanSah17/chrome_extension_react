@@ -410,7 +410,18 @@ class HindiAstraBackground {
 
                 if (data.data && data.data.translations && data.data.translations.length > 0) {
                     const translation = data.data.translations[0].translatedText;
-                    resultText.textContent = translation;
+
+                    // Check if it's a single word for synonym support
+                    const isSingleWord = text.split(/\s+/).length === 1 && /^[a-zA-Z]+$/.test(text);
+
+                    // Get synonyms if it's a single word
+                    let synonyms = [];
+                    if (isSingleWord) {
+                        synonyms = getCommonSynonyms(text.toLowerCase());
+                    }
+
+                    // Display enhanced results
+                    displayEnhancedResults(translation, synonyms, isSingleWord);
                     resultArea.style.display = 'block';
                     console.log('✅ Translation successful:', translation);
                 } else {
@@ -425,6 +436,56 @@ class HindiAstraBackground {
                 btn.disabled = false;
                 isTranslating = false;
             }
+        }
+
+        // Get synonyms for common words
+        function getCommonSynonyms(word) {
+            const synonymDict = {
+                'happy': ['joyful', 'cheerful', 'glad', 'pleased'],
+                'sad': ['unhappy', 'sorrowful', 'melancholy', 'dejected'],
+                'big': ['large', 'huge', 'enormous', 'massive'],
+                'small': ['tiny', 'little', 'miniature', 'petite'],
+                'good': ['excellent', 'great', 'wonderful', 'fine'],
+                'bad': ['terrible', 'awful', 'horrible', 'poor'],
+                'fast': ['quick', 'rapid', 'swift', 'speedy'],
+                'slow': ['sluggish', 'gradual', 'leisurely', 'delayed'],
+                'observe': ['watch', 'notice', 'see', 'examine'],
+                'study': ['learn', 'examine', 'research', 'analyze'],
+                'understand': ['comprehend', 'grasp', 'realize', 'perceive'],
+                'explain': ['describe', 'clarify', 'illustrate', 'demonstrate'],
+                'create': ['make', 'produce', 'generate', 'build'],
+                'important': ['significant', 'crucial', 'vital', 'essential'],
+                'beautiful': ['gorgeous', 'lovely', 'attractive', 'stunning'],
+                'smart': ['intelligent', 'clever', 'bright', 'brilliant'],
+                'strong': ['powerful', 'mighty', 'robust', 'sturdy'],
+                'easy': ['simple', 'effortless', 'straightforward', 'basic'],
+                'difficult': ['hard', 'challenging', 'tough', 'complex']
+            };
+            return synonymDict[word] || [];
+        }
+
+        // Display enhanced results with synonyms
+        function displayEnhancedResults(translation, synonyms, isSingleWord) {
+            const resultText = document.getElementById('result-text');
+
+            let content = `<strong style="color: #2d5a2d;">${translation}</strong>`;
+
+            if (synonyms.length > 0 && isSingleWord) {
+                content += `
+                    <div style="margin-top: 12px; padding-top: 12px; border-top: 1px solid #c3e6c3;">
+                        <div style="font-size: 12px; color: #666; margin-bottom: 6px;">
+                            📚 English Synonyms:
+                        </div>
+                        <div style="display: flex; flex-wrap: wrap; gap: 4px;">
+                            ${synonyms.slice(0, 4).map(synonym =>
+                                `<span style="background: #e8f5e8; color: #2d5a2d; padding: 2px 6px; border-radius: 8px; font-size: 11px; border: 1px solid #c3e6c3;">${synonym}</span>`
+                            ).join('')}
+                        </div>
+                    </div>
+                `;
+            }
+
+            resultText.innerHTML = content;
         }
 
         function showError(message) {
